@@ -2,6 +2,7 @@
 package AnalizadorLexico;
 
 
+import AnalizadorSintactico.AnalizadorSintactico;
 import Jframe.VentanaInicio;
 import Recursos.ManejadorTabla;
 import java.util.ArrayList;
@@ -14,15 +15,12 @@ import java.util.Collections;
  */
 public class Analizador {
     private VentanaInicio ventana;
-    private ArrayList <String> listErrores = new ArrayList <String>();
-    private ArrayList <String> listLexema = new ArrayList <String>();
-    private ArrayList <String> list= new ArrayList <String>();
-    private ArrayList <String> lisToken= new ArrayList <String>();
-     private ArrayList <String> tipoError= new ArrayList <String>();
-    int inidice=0;
+    private ArrayList <Token> listaToken = new ArrayList<Token>();
+    private ArrayList <TipoError> listaErrores = new ArrayList<TipoError>();
     int estado=0;
     String lexema="";
     private PalabraReservadas reservada;
+    private TipoToken tipoToken;
     
   
  public Analizador( VentanaInicio ventana){
@@ -31,10 +29,8 @@ public class Analizador {
  }
   
   public void analizar(){
-    listLexema.clear();
-    lisToken.clear();
-    tipoError.clear();
-    listErrores.clear();
+    listaToken.clear();
+    listaErrores.clear();
     Buscar bs=new Buscar();
     String todoTexto= this.ventana.getjTextArea1().getText()+" ";
     String textolimpio="";
@@ -54,7 +50,7 @@ public class Analizador {
        }
        
    }
-   
+    int fila=1;
    for(int indice=0; indice<textolimpio.length();indice++){
        char letra=textolimpio.charAt(indice);
        char Error;
@@ -68,7 +64,11 @@ public class Analizador {
                    estado=2;
                    lexema=""+letra;
                }
-               else if(letra==' ' | letra=='\n'){
+               else if(letra==' '){
+                   estado=0;
+               }
+               else if(letra=='\n'){
+                   fila++;
                    estado=0;
                }
                
@@ -83,39 +83,36 @@ public class Analizador {
                }
                
                else if(letra=='+'|| letra=='-' || letra=='*' || letra=='=' || letra=='(' || letra==')' ){
-                   estado=0;
-                   this.listLexema.add(String.valueOf(letra));
-                   this.lisToken.add("simbolo");
+                   listaToken.add(new Token(String.valueOf(letra),tipoToken.SIMBOLO.name(),fila,indice));
+                    estado=0;
                }
                
                else {
-               //bs.buscarError(ventana.getjTextArea1(),String.valueOf(letra));
-               System.out.println("Error Lexico   "+letra);
-               listErrores.add(""+letra);
-               tipoError.add("No existe en el alfabeto");
+               listaErrores.add(new TipoError("No existe en el alfabeto",String.valueOf(letra),fila,indice));
                }
                
                break;
                
            case 1:
-               if(Character.isLetter(letra) | Character.isDigit(letra) || letra=='-' || letra=='_' ){
+               if(Character.isLetter(letra) || Character.isDigit(letra) || letra=='-' || letra=='_' ){
                    estado=1;
                    lexema=lexema+letra;
                   
                }
-               else if(letra==' ' | letra=='\n'){
-                    listLexema.add(lexema);
-                    lisToken.add("Identificador");
-                    lexema="";
-                    estado=0;
-                    indice--;
+               else if(letra==' '){
+                    
+                   agregarToken(lexema,tipoToken.IDENTIFICADOR,fila,indice);
+                    
+               }
+               else if( letra=='\n'){
+                  
+                    agregarToken(lexema,tipoToken.IDENTIFICADOR,fila,indice);
+                    fila++;
+                   
                }
                else {
-                  String error=lexema+letra;
-                  listLexema.add("Token: identificador    Lexema:  "+lexema);
-                  listErrores.add(lexema+letra);
-                  tipoError.add("Se esperaba un numero o una letra");
-                  System.out.println("Error  ---"+letra);
+                  
+                  listaErrores.add(new TipoError("Se esperaba un numero o una letra",lexema+letra,fila,indice));
                   lexema="";
                   estado=0;
                 
@@ -129,21 +126,17 @@ public class Analizador {
                         
                   }
                
-               else if(letra==' ' | letra=='\n'){
-                    listLexema.add(lexema);
-                    lisToken.add("Entero");
-                    lexema="";
-                    estado=0;
-                    indice--;
+               else if(letra==' '){
+                    agregarToken(lexema,tipoToken.ENTERO,fila,indice);
+  
+               }
+               else if(letra=='\n'){
+                    agregarToken(lexema,tipoToken.ENTERO,fila,indice);
+                    fila++;
                }
        
-               else {
-                  //bs.buscarError(ventana.getjTextArea1(),String.valueOf(lexema+letra));
-                  listLexema.add(lexema);
-                  System.out.println("Error Lexico   "+letra);
-                 // listErrores.add("Se esperava un numero    " +lexema+letra);
-                 listErrores.add(lexema+letra); 
-                 tipoError.add("se esperava un numero");
+               else{
+                 listaErrores.add(new TipoError("Se esperaba un numero",lexema+letra,fila,indice));
                  lexema="";
                   estado=0;
                  
@@ -153,34 +146,28 @@ public class Analizador {
                
            
            case 3:
-               String comilla="'";
-               if(Character.isLetter(letra) || Character.isLetterOrDigit(letra)  || letra==' ' || letra=='<' || letra=='>'  || letra== ':' || letra==',' || letra==';' || letra=='/'|| letra=='.' || letra==')' || letra=='(' || letra=='=' || letra=='+' ){
+                String comilla="'";
+                if(Character.isLetter(letra) || Character.isLetterOrDigit(letra)  || letra==' ' || letra=='<' || letra=='>'  || letra== ':' || letra==',' || letra==';' || letra=='/'|| letra=='.' || letra==')' || letra=='(' || letra=='=' || letra=='+' || letra=='-'){
                    estado=3;
                    lexema=lexema+letra;
-               }
-               
-            else if(letra=='"'){
-                    listLexema.add(lexema+letra);
-                    lisToken.add("Literal");
-                    lexema="";
-                    estado=0;
-                   // indice--;
-                         
                 }
-            else if(comilla.equals(String.valueOf(letra))){
+               
+                else if(comilla.equals(String.valueOf(letra))){
                     estado=3;
                     lexema=lexema+letra;
-            }
+                }
+            
+                else if(letra=='"'){
+                    lexema=lexema+letra;
+                    estado=6;
+                         
+                }
             
                else {
-                   // bs.buscarError(ventana.getjTextArea1(),String.valueOf(lexema+letra));
-                    listLexema.add(lexema);
-                    System.out.println("Error Lexico   "+letra);
-                  //  listErrores.add("Se esperava un numero    " +lexema+letra);
-                  listErrores.add(lexema+letra);  
-                  tipoError.add("no es una literal");
+                  
+                listaErrores.add(new TipoError("no es una literal",lexema+letra,fila,indice));
                   lexema="";
-                    estado=0;
+                  estado=0;
                 }
            
                break;
@@ -192,12 +179,7 @@ public class Analizador {
                     
                   }
                else {
-                   //bs.buscarError(ventana.getjTextArea1(),String.valueOf(lexema+letra));
-                    listLexema.add(lexema);
-                    System.out.println("Error Lexico   "+letra);
-                    //listErrores.add("Se esperaba un espacio "+lexema+letra);
-                    listErrores.add(lexema+letra);
-                    tipoError.add("se esperaba una /");
+                    listaErrores.add(new TipoError("Se esperaba  una /",lexema+letra,fila,indice));
                     lexema="";
                     estado=0;
                     
@@ -205,15 +187,27 @@ public class Analizador {
                break;
            case 5:
              if( letra=='\n'){
-                 listLexema.add(lexema);
-                 lisToken.add("Comentario");
-                    lexema="";
-                    estado=0;
+                 agregarToken(lexema,tipoToken.COMENTARIO,fila,indice);
+                 
                   }
                else {
                   estado=5;
                   lexema=lexema+letra;
                }
+               break;
+           case 6:
+                if(letra==' '){
+                    agregarToken(lexema,tipoToken.LITERAL,fila,indice);
+                }
+                else if(letra=='\n'){
+                     agregarToken(lexema,tipoToken.LITERAL,fila,indice);
+                     fila++;
+                     
+                }
+                else {
+                    listaErrores.add(new TipoError("Se esperaba un espacio",lexema+letra,fila,indice));
+                    lexema="";
+                }
                break;
                
            default:
@@ -223,7 +217,7 @@ public class Analizador {
    }
   }
   
-    public void contarLexemas(){
+  /*  public void contarLexemas(){
         
         for(int i=0; i<listLexema.size() ;i++){
             int cont=0;
@@ -238,7 +232,7 @@ public class Analizador {
         }    
     }
     
-    public  void agregarlista(String campo){
+   //* public  void agregarlista(String campo){
        if(list.contains(campo)){
        
        }
@@ -249,7 +243,7 @@ public class Analizador {
          
     }
   
-    
+    */
   /*  public void repetidos(){
         ventana.getjTextArea2().setText("");
         for(int i=0; i<list.size(); i++){
@@ -262,50 +256,67 @@ public class Analizador {
   
     
     public void palabraReservadas(){
-        for(int i=0; i<listLexema.size();i++){
-            if(listLexema.get(i).equals(reservada.ESCRIBIR.name())){ 
-               lisToken.add(i, "Palabras reservada");
+        for(int i=0; i<listaToken.size();i++){
+            
+            
+            if(listaToken.get(i).getLexema().equals(reservada.ESCRIBIR.name())){ 
+               listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());
             }
-            else if(reservada.FIN.name().equals(listLexema.get(i))){
-                lisToken.add(i, "Palabras reservada");  
+            else if(reservada.FIN.name().equals(listaToken.get(i).getLexema())){
+                listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());  
             }
-            else if(listLexema.get(i).equals(reservada.REPETIR.name())){
-                lisToken.add(i, "Palabras reservada");  
+            else if(listaToken.get(i).getLexema().equals(reservada.REPETIR.name())){
+                listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());
             }
-            else if(listLexema.get(i).equals(reservada.INICIAR.name())){
-                lisToken.add(i, "Palabras reservada");  
+            else if(listaToken.get(i).getLexema().equals(reservada.INICIAR.name())){
+                listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());
             }
-            else if(listLexema.get(i).equals(reservada.SI.name())){
-                lisToken.add(i, "Palabras reservada");  
+            else if(listaToken.get(i).getLexema().equals(reservada.SI.name())){
+                listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());
             }
-            else if(listLexema.get(i).equals(reservada.VERDADERO.name())){
-                lisToken.add(i, "Palabras reservada");  
+            else if(listaToken.get(i).getLexema().equals(reservada.VERDADERO.name())){
+                listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());
             }
-            else if(listLexema.get(i).equals(reservada.FALSO.name())){
-                lisToken.add(i, "Palabras reservada");  
+            else if(listaToken.get(i).getLexema().equals(reservada.FALSO.name())){
+                listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());  
             }
-            else if(listLexema.get(i).equals(reservada.ENTONCES.name())){
-                lisToken.add(i, "Palabras reservada");  
+            else if(listaToken.get(i).getLexema().equals(reservada.ENTONCES.name())){
+                listaToken.get(i).setToken(tipoToken.PALABRA_RESERVADA.name());  
             }
             
         }
     }
     
     public void imprimirLexemas(){
-        
+        AnalizadorSintactico As=new AnalizadorSintactico();
         ManejadorTabla tabla =new ManejadorTabla();
+        if(this.listaErrores.size()==0){
+            As.analizar(listaToken);
+            tabla.ReporteTokens(listaToken,ventana.getjTable1());
+            
+        }
+        else {
+            tabla.ReporteError(listaErrores, ventana.getjTable1());
+        }
         
-         if(listErrores.size()==0){
-             tabla.tabla(listLexema, lisToken, this.ventana.getjTable1());
-         }
-         else {
-             tabla.tablaErrores(listErrores,tipoError ,ventana.getjTable1());
-         }
         
+              
         
     }
 
     
-   
+    
+    public void agregarToken(String lexema, TipoToken tipo ,int fila,int indice ){
+                    listaToken.add(new Token(lexema,tipo.name(),fila,indice));
+                    lexema="";
+                    estado=0;
+                    indice--;
+    }
+
+  
+    
+    
+    
+    
     
 }

@@ -5,6 +5,8 @@
  */
 package Recursos;
 
+import AnalizadorLexico.TipoError;
+import AnalizadorLexico.Token;
 import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -16,32 +18,31 @@ import javax.swing.table.DefaultTableModel;
 public class ManejadorTabla {
     
     
-    public void tabla(ArrayList<String> lexema, ArrayList<String> token, JTable table) {
+    public void ReporteTokens(ArrayList<Token> list, JTable table) {
          DefaultTableModel modelo = new DefaultTableModel();
           table.setModel(modelo);
           modelo.addColumn("Nombre Token");
           modelo.addColumn("Lexema");
-          modelo.addColumn("Posicion");
-          String [] listaLexema =lexema.toArray(new String [lexema.size()]);
-          
-          for(int i=0; i<lexema.size(); i++){
-          
-               String vectorToken[] = {token.get(i)};
-               String vectorLexemas[] = {lexema.get(i)};
-               modelo.addRow(new Object[]{token.get(i),lexema.get(i)});
-              
-              
+          modelo.addColumn("fila");
+          modelo.addColumn("columna");
+          for(int i=0; i<list.size();i++){
+              modelo.addRow(new Object[]{list.get(i).getToken(),list.get(i).getLexema(),list.get(i).getFila(),list.get(i).getColumna()});
           }
+           
     }
     
-    public void tablaErrores(ArrayList<String> errores,ArrayList<String> tipoEror, JTable table){
-          DefaultTableModel modelo = new DefaultTableModel();
+    
+    public void ReporteError(ArrayList<TipoError> lista, JTable table) {
+         DefaultTableModel modelo = new DefaultTableModel();
           table.setModel(modelo);
-          modelo.addColumn("Tipo de Error ");
-          modelo.addColumn("lexema de error");
-          for(int i=0; i<errores.size();i++){
-              modelo.addRow(new Object[]{tipoEror.get(i),errores.get(i)});
-             
+          modelo.addColumn("Tipo Error");
+          modelo.addColumn("Lexema");
+          modelo.addColumn("fila");
+          modelo.addColumn("columna");
+          for(int j=0; j<lista.size();j++){
+              modelo.addRow(new Object[]{lista.get(j).getTipoError(),lista.get(j).getLexema(),lista.get(j).getFila(),lista.get(j).getColumna()});
+
           }
+           
     }
 }

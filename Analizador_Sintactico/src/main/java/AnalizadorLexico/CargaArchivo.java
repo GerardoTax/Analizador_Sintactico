@@ -40,7 +40,8 @@ public class CargaArchivo {
        // archivo.showSaveDialog(this);
         if (archivo.getSelectedFile() != null) {
         try (FileWriter guardado = new FileWriter(archivo.getSelectedFile())) {
-        guardado.write(tex.getText());
+       // guardado.write(tex.getText());
+        guardado.write("perros cara de ano");
         JOptionPane.showMessageDialog(null, "El archivo fue guardado con éxito en la ruta establecida");
         }
         }
