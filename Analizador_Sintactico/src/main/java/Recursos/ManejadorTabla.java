@@ -40,9 +40,22 @@ public class ManejadorTabla {
           modelo.addColumn("fila");
           modelo.addColumn("columna");
           for(int j=0; j<lista.size();j++){
-              modelo.addRow(new Object[]{lista.get(j).getTipoError(),lista.get(j).getLexema(),lista.get(j).getFila(),lista.get(j).getColumna()});
+              modelo.addRow(new Object[]{lista.get(j).getLexema(),lista.get(j).getTipoError(),lista.get(j).getFila(),lista.get(j).getColumna()});
 
           }
            
+    }
+    
+    public void ReporteErrorSintactico(ArrayList<String> lista, JTable table){
+          DefaultTableModel modelo = new DefaultTableModel();
+          table.setModel(modelo);
+          modelo.addColumn("Tipo Error");
+          modelo.addColumn("Lexema");
+          modelo.addColumn("fila");
+          modelo.addColumn("columna");
+          for(int j=0; j<lista.size();j++){
+              modelo.addRow(new Object[]{lista.get(j)});
+
+          }
     }
 }

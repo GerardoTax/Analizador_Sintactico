@@ -5,8 +5,13 @@ package AnalizadorLexico;
 import AnalizadorSintactico.AnalizadorSintactico;
 import Jframe.VentanaInicio;
 import Recursos.ManejadorTabla;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -288,10 +293,10 @@ public class Analizador {
     }
     
     public void imprimirLexemas(){
-        AnalizadorSintactico As=new AnalizadorSintactico();
+       // AnalizadorSintactico As=new AnalizadorSintactico();
         ManejadorTabla tabla =new ManejadorTabla();
         if(this.listaErrores.size()==0){
-            As.analizar(listaToken);
+            ventana.getjButton9().setVisible(true);
             tabla.ReporteTokens(listaToken,ventana.getjTable1());
             
         }
@@ -299,11 +304,27 @@ public class Analizador {
             tabla.ReporteError(listaErrores, ventana.getjTable1());
         }
         
-        
+       
               
         
     }
-
+    public void crearArchivo(){
+    
+        AnalizadorSintactico As=new AnalizadorSintactico();
+        int result = JOptionPane.showConfirmDialog(ventana, "Desea guardar el archivo de salida del analizador sintactico .");
+        if(result==0){
+             JFileChooser archivo = new JFileChooser(System.getProperty("user.dir"));
+             archivo.showSaveDialog(ventana);
+             
+             try {
+                As.analizar(listaToken,archivo,ventana.getjTable1());
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Analizador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
     
     
     public void agregarToken(String lexema, TipoToken tipo ,int fila,int indice ){
