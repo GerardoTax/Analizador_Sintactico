@@ -50,9 +50,6 @@ public class ManejadorTabla {
           DefaultTableModel modelo = new DefaultTableModel();
           table.setModel(modelo);
           modelo.addColumn("Tipo Error");
-          modelo.addColumn("Lexema");
-          modelo.addColumn("fila");
-          modelo.addColumn("columna");
           for(int j=0; j<lista.size();j++){
               modelo.addRow(new Object[]{lista.get(j)});
 

@@ -320,7 +320,7 @@ public class Analizador {
                 As.analizar(listaToken,archivo,ventana.getjTable1());
                 
             } catch (IOException ex) {
-                Logger.getLogger(Analizador.class.getName()).log(Level.SEVERE, null, ex);
+               
             }
         }
         

@@ -1,54 +1,27 @@
-     <head>
-     <title>ESTA ES UN DOCUMENTO HTML</TITLE>
-     </head>
-     <body>
-     <h1 style='color: blue'>Este es un titulo 1</h1>
-     <p>Este es un parrafo</p>
-     <h2>Tabla</h2>
-     <table>
-     <tr>
-     <th style='border: 1px solid gray;text-align: left;padding: 8px;'>COMPANIA</th>
-     <th style='border: 1px solid gray;text-align: left;padding: 8px;'>CONTACTO</th>
-     <th style='border: 1px solid gray;text-align: left;padding: 8px;'>CIUDAD</th>
-     <th style='border: 1px solid gray;text-align: left;padding: 8px;'>PAIS</th>
-     </tr>
-     <tr>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Alfreds Futterkiste</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Maria Anders</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Xela</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Guatemala</td>
-     </tr>
-     <tr>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Centro comercial Moctezuma</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Francisco Chang</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Taxisco</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Mexico</td>
-     </tr>
-     <tr>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Ernst Handel</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Roland Mendel</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Buenos Aires</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Argentina</td>
-     </tr>
-     <tr>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Island Trading</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Helen Bennett</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Londres</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>UK</td>
-     </tr>
-     <tr>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Laughing Bacchus Winecellars</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Yoshi Tannamuri</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Ontario</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Canada</td>
-     </tr>
-     <tr>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Magazzini Alimentari Riuniti</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Giovanni Rovelli</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Pizza</td>
-     <td style='border: 1px solid gray;text-align: left;padding: 8px;'>Italia</td>
-     </tr>
-     </table>
-     <p>ES UNA CONDICIONAL VERDADERA</p>
-     </body>
-     </html>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mycompany</groupId>
+    <artifactId>Analizador_Sintactico</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <repositories>
+        <repository>
+            <id>unknown-jars-temp-repo</id>
+            <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
+            <url>file:${project.basedir}/lib</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>unknown.binary</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+</project> 

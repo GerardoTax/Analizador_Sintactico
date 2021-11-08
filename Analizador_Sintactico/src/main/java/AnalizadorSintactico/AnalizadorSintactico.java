@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
@@ -51,10 +52,11 @@ public class AnalizadorSintactico {
                         estado=9;
                     }
                     else  if(listaToken.get(i).getToken().equals(tipoToken.IDENTIFICADOR.name())){
-                        //estado=11;
+                        estado=11;
                     }
                     
                     else {
+                       // listaErrores.add("Error en la fila "+listaToken.get(i-1).getFila()+" No existe en el alfabeto");
                         estado=0;  
                     }
                 break;
@@ -92,7 +94,7 @@ public class AnalizadorSintactico {
                      }
                      
                      else {
-                        
+                         listaErrores.add("Error en la fila "+listaToken.get(i-1).getFila()+"    se esperaba la palabra reservada FIN ");
                         System.out.println(" Error se esperaba la palabra reservada FIN ");
                         i--;
                         estado=0;
@@ -103,7 +105,7 @@ public class AnalizadorSintactico {
                         estado=4;
                     }
                     else {
-                        this.listaErrores.add("Error no ingreso un numero positvo o un identificador");
+                        this.listaErrores.add("Error en la fila"+listaToken.get(i-1).getFila()+"    no ingreso un numero positvo o un identificador");
                         System.out.println("Error no ingreso un numero positvo o un identificador");
                     }
                     
@@ -117,7 +119,8 @@ public class AnalizadorSintactico {
                         
                         
                         else {
-                            this.listaErrores.add("error");
+                            this.listaErrores.add("Error en la fila  "+ listaToken.get(i-1).getFila()+"   se esperaba la palabra reservada INICIAR");
+                            estado=0;
  
                          System.out.print("error");
                         }
@@ -142,7 +145,7 @@ public class AnalizadorSintactico {
                     }
                     
                     else {
-                        this.listaErrores.add("Error sintactico");
+                         listaErrores.add(" Error en la fila "+listaToken.get(i-1).getFila()+"      se esperaba en identificador,numero o literal");
                         System.out.println("Error sintactico");
                         estado=0;
                     }
@@ -168,7 +171,7 @@ public class AnalizadorSintactico {
                      }
                      
                      else {
-                        this.listaErrores.add(" Error se esperaba la palabra reservada FIN ");
+                        listaErrores.add(" Error en la fila "+listaToken.get(i-1).getFila()+"      se esperaba la palabra reservada FIN");
                         System.out.println(" Error se esperaba la palabra reservada FIN ");
                         i--;
                         estado=5;
@@ -185,7 +188,7 @@ public class AnalizadorSintactico {
                           }
                           else 
                           {
-                              this.listaErrores.add("ERROR FALTA FIN  DE CIERE ");
+                              this.listaErrores.add("Error enla fila"+listaToken.get(i-1).getFila()+"  FALTA FIN  DE CIERE ");
                             System.out.println("ERROR FALTA FIN  DE CIERE ");
 
                             estado=0;
@@ -205,7 +208,7 @@ public class AnalizadorSintactico {
 
                          else 
                           {
-                              this.listaErrores.add("------ERROR FALTA FIN  DE CIERE ");
+                              this.listaErrores.add("Error enla fila"+listaToken.get(i-1).getFila()+"  FALTA FIN  DE CIERRE ");
                            System.out.println("------ERROR FALTA FIN  DE CIERE ");
 
 
@@ -262,7 +265,7 @@ public class AnalizadorSintactico {
                             }
                             else 
                           {
-                              this.listaErrores.add("------ERROR FALTA EL SIGNO + O -");
+                              this.listaErrores.add("Error en la fila "+listaToken.get(i-1).getFila()+" FALTA EL SIGNO + O -");
                            System.out.println("------ERROR FALTA EL SIGNO + O -");
                            
                           }
@@ -276,7 +279,7 @@ public class AnalizadorSintactico {
                             }
                            else 
                           {
-                              this.listaErrores.add("------ERROR FALTA  EL SIMBOLO )  O UN FIN ");
+                              this.listaErrores.add("Error en la fila "+listaToken.get(i-1).getFila()+"  FALTA  EL SIMBOLO )  O UN FIN ");
                            System.out.println("------ERROR FALTA  EL SIMBOLO )  O UN FIN ");
                            estado=0;
                           }
@@ -287,8 +290,9 @@ public class AnalizadorSintactico {
                             }
                          else 
                           {
-                              this.listaErrores.add("------ERROR FALTA FIN  DE CIERE ");
-                           System.out.println("------ERROR FALTA FIN  DE CIERE ");
+                              
+                              this.listaErrores.add("Error en la fila "+listaToken.get(i-1).getFila()+" FALTA EL FIN DE CIERRE");
+                           System.out.println("------ERROR FALTA FIN  DE CIERRE ");
                            estado=0;
                           }
                     break;
@@ -328,13 +332,25 @@ public class AnalizadorSintactico {
     public void verificarErrores(JTable table,JFileChooser archivo ){
          ManejadorTabla tabla =new ManejadorTabla();
             if(listaErrores.size()==0){
-            
+                JOptionPane.showMessageDialog(null, "el archivo fue guardado correctamente ");
             }
                 
-               // File fichero = new File(archivo.getSelectedFile().getName());
-                //fichero.delete();
+              
             else {
-             tabla.ReporteErrorSintactico(listaErrores, table);
+                
+                try {
+                    File fichero = new File(archivo.getSelectedFile().getAbsolutePath());
+                    System.out.println(archivo.getSelectedFile());
+                    if(fichero.delete()){
+                         JOptionPane.showMessageDialog(null, "el archivo no se pudo guardar porque contiene errores");
+                          tabla.ReporteErrorSintactico(listaErrores, table);
+                    }
+                } catch (Exception e) {
+                }
+                 
+                 
+                
+            
             }    
             
     }
