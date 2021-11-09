@@ -75,6 +75,7 @@ public class Analizador {
                }
                else if(letra=='\n'){
                    fila++;
+                   columna=indice+1;
                    estado=0;
                }
                
@@ -89,12 +90,12 @@ public class Analizador {
                }
                
                else if(letra=='+'|| letra=='-' || letra=='*' || letra=='=' || letra=='(' || letra==')' ){
-                   listaToken.add(new Token(String.valueOf(letra),tipoToken.SIMBOLO.name(),fila,indice));
+                   listaToken.add(new Token(String.valueOf(letra),tipoToken.SIMBOLO.name(),fila,indice-columna));
                     estado=0;
                }
                
                else {
-               listaErrores.add(new TipoError("No existe en el alfabeto",String.valueOf(letra),fila,indice));
+               listaErrores.add(new TipoError("No existe en el alfabeto",String.valueOf(letra),fila,indice-columna));
                }
                
                break;
@@ -107,18 +108,19 @@ public class Analizador {
                }
                else if(letra==' '){
                     
-                   agregarToken(lexema,tipoToken.IDENTIFICADOR,fila,indice);
+                   agregarToken(lexema,tipoToken.IDENTIFICADOR,fila,indice-columna);
                     
                }
                else if( letra=='\n'){
                   
-                    agregarToken(lexema,tipoToken.IDENTIFICADOR,fila,indice);
+                    agregarToken(lexema,tipoToken.IDENTIFICADOR,fila,indice-columna);
                     fila++;
+                    columna=indice+1;
                    
                }
                else {
                   
-                  listaErrores.add(new TipoError("Se esperaba un numero o una letra",lexema+letra,fila,indice));
+                  listaErrores.add(new TipoError("Se esperaba un numero o una letra",lexema+letra,fila,indice-columna));
                   lexema="";
                   estado=0;
                 
@@ -133,16 +135,17 @@ public class Analizador {
                   }
                
                else if(letra==' '){
-                    agregarToken(lexema,tipoToken.ENTERO,fila,indice);
+                    agregarToken(lexema,tipoToken.ENTERO,fila,indice-columna);
   
                }
                else if(letra=='\n'){
-                    agregarToken(lexema,tipoToken.ENTERO,fila,indice);
+                    agregarToken(lexema,tipoToken.ENTERO,fila,indice-columna);
                     fila++;
+                    columna=indice+1;
                }
        
                else{
-                 listaErrores.add(new TipoError("Se esperaba un numero",lexema+letra,fila,indice));
+                 listaErrores.add(new TipoError("Se esperaba un numero",lexema+letra,fila,indice-columna));
                  lexema="";
                   estado=0;
                  
@@ -171,7 +174,7 @@ public class Analizador {
             
                else {
                   
-                listaErrores.add(new TipoError("no es una literal",lexema+letra,fila,indice));
+                listaErrores.add(new TipoError("no es una literal",lexema+letra,fila,indice-columna));
                   lexema="";
                   estado=0;
                 }
@@ -185,7 +188,7 @@ public class Analizador {
                     
                   }
                else {
-                    listaErrores.add(new TipoError("Se esperaba  una /",lexema+letra,fila,indice));
+                    listaErrores.add(new TipoError("Se esperaba  una /",lexema+letra,fila,indice-columna));
                     lexema="";
                     estado=0;
                     
@@ -193,7 +196,8 @@ public class Analizador {
                break;
            case 5:
              if( letra=='\n'){
-                 agregarToken(lexema,tipoToken.COMENTARIO,fila,indice);
+                 agregarToken(lexema,tipoToken.COMENTARIO,fila,indice-columna);
+                 columna=indice+1;
                  
                   }
                else {
@@ -203,15 +207,16 @@ public class Analizador {
                break;
            case 6:
                 if(letra==' '){
-                    agregarToken(lexema,tipoToken.LITERAL,fila,indice);
+                    agregarToken(lexema,tipoToken.LITERAL,fila,indice-columna);
                 }
                 else if(letra=='\n'){
-                     agregarToken(lexema,tipoToken.LITERAL,fila,indice);
+                     agregarToken(lexema,tipoToken.LITERAL,fila,indice-columna);
                      fila++;
+                     columna=indice+1;
                      
                 }
                 else {
-                    listaErrores.add(new TipoError("Se esperaba un espacio",lexema+letra,fila,indice));
+                    listaErrores.add(new TipoError("Se esperaba un espacio",lexema+letra,fila,indice-columna));
                     lexema="";
                 }
                break;
