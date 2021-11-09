@@ -68,7 +68,6 @@ public class VentanaInicio extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -121,7 +120,7 @@ public class VentanaInicio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton9);
-        jButton9.setBounds(610, 10, 150, 22);
+        jButton9.setBounds(500, 10, 150, 22);
 
         jTextArea1.setBackground(new java.awt.Color(255, 255, 204));
         jTextArea1.setColumns(20);
@@ -149,23 +148,14 @@ public class VentanaInicio extends javax.swing.JFrame {
         jPanel1.add(jButton2);
         jButton2.setBounds(110, 10, 130, 22);
 
-        jButton3.setText("Guardar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton3);
-        jButton3.setBounds(250, 10, 90, 22);
-
-        jButton4.setText("Guardar como");
+        jButton4.setText("Guardar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton4);
-        jButton4.setBounds(350, 10, 120, 22);
+        jButton4.setBounds(260, 10, 120, 22);
 
         jButton5.setText("Nuevo");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -174,7 +164,7 @@ public class VentanaInicio extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton5);
-        jButton5.setBounds(490, 10, 90, 22);
+        jButton5.setBounds(390, 10, 90, 22);
 
         jButton6.setText("Rehacer");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -299,10 +289,6 @@ public class VentanaInicio extends javax.swing.JFrame {
         this.jButton9.setVisible(false);
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -340,7 +326,6 @@ public class VentanaInicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;

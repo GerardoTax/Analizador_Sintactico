@@ -56,6 +56,7 @@ public class Analizador {
        
    }
     int fila=1;
+    int columna=0;
    for(int indice=0; indice<textolimpio.length();indice++){
        char letra=textolimpio.charAt(indice);
        char Error;
